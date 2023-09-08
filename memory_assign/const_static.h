@@ -2,8 +2,8 @@
 // Created by viruser on 2023/4/28.
 //
 
-#ifndef TUTURIAL_CONST_STATIC_H
-#define TUTURIAL_CONST_STATIC_H
+#ifndef TUTORIAL_CONST_STATIC_H
+#define TUTORIAL_CONST_STATIC_H
 
 #include <string>
 #include <iostream>

@@ -3,12 +3,14 @@
 //
 #include "smart_ptr/smart_ptr.h"
 #include <iostream>
+#include <map>
+#include <atomic>
+#include <vector>
 
 using namespace std;
 
 void test_return_ptr() {
     Test *t_ptr = new Test();
-
     // smart_ptr1 和 smart_ptr2  t_ptr 三个指针同时管理同一个对象，double free 且 两个智能指针的引用计数相互独立。
     auto smart_ptr1 = t_ptr->getPtr();
     auto smart_ptr2 = t_ptr->getPtr();
@@ -53,17 +55,47 @@ void test_convert() {
     int n = 10;
     void *pv = &n; // 将 int 指针转换为 void 指针
 
-    double *pd = reinterpret_cast<double*>(pv); // 将 void 指针转换为 double 指针
+    double *pd = reinterpret_cast<double *>(pv); // 将 void 指针转换为 double 指针
 
     *pd = 3.14; // 在 double 指针上进行赋值操作
 
     std::cout << "n = " << n << std::endl; // 输出 n 的值
 }
 
+void test_unique_ptr() {
+    std::unique_ptr<int> p = std::make_unique<int>(5);
+    std::map<int, std::unique_ptr<int>> m_map;
+    m_map[0] = std::move(p);
+    auto tmp = std::move(m_map[0]);// map 中0号索引存储的智能指针被掏空，置为默认值NULL
+    std::cout << *m_map[0] << m_map.size() << std::endl;
+//    std::cout << *tmp << m_map.size() << std::endl;
+}
+
+void test_int() {
+    // int 有符号 根据平台来显示一般32位、64位
+    // int32_t 有符号 指定32长度
+    //size_t 无符号 根据平台来显示
+    // long 有符号 根据平台来显示 32位等于int
+    // long long 强指定64位 有符号
+    std::cout << sizeof(int) << "---" << sizeof(int32_t) << "-----" << sizeof(size_t) << "---" << sizeof(long) << "---"
+              << sizeof(long long);
+}
+
+void test_destruct_ptr() {
+    TestConstruct();
+}
 
 int main() {
 //    test_return_ptr();
 //    test_smart_ptr();
-    test_convert();
+//    test_convert();
+//    test_unique_ptr();
+//    test_destruct_ptr();
+    const std::string s1 = "";
+    std::string s2;
+    s2 = s1+"1";
+    std::cout<<"xx";
+
+
     return 0;
 }

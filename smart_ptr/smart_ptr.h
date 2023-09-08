@@ -2,8 +2,8 @@
 // Created by viruser on 2023/5/5.
 //
 
-#ifndef TUTURIAL_SMART_PTR_H
-#define TUTURIAL_SMART_PTR_H
+#ifndef TUTORIAL_SMART_PTR_H
+#define TUTORIAL_SMART_PTR_H
 
 
 #include <memory>
@@ -52,5 +52,35 @@ public:
 
     std::string m_str{"test"};
 };
+
+class TestDestruct {
+public:
+    TestDestruct() {
+        std::cout << "Test_Destruct C" << std::endl;
+    };
+
+
+    ~TestDestruct() {
+        std::cout << "Test_Destruct D" << std::endl;
+    }
+};
+
+class TestConstruct {
+public:
+    TestConstruct() {
+        if (!m_shared_ptr) {
+            m_shared_ptr = std::make_shared<TestDestruct>();
+        }
+        if (!m_unique_ptr) {
+            m_unique_ptr = std::make_unique<TestDestruct>();
+        }
+    }
+
+    ~TestConstruct() = default;
+
+    std::shared_ptr<TestDestruct> m_shared_ptr;
+    std::unique_ptr<TestDestruct> m_unique_ptr;
+};
+
 
 #endif //TUTURIAL_SMART_PTR_H
